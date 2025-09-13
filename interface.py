@@ -1,5 +1,5 @@
 # app.py
-import tkinter as tk
+import customtkinter as ctk
 from tkinter import messagebox
 import joblib
 import pandas as pd
@@ -7,7 +7,7 @@ import pandas as pd
 # Modeli yükle
 model = joblib.load("gpa_predictor.pkl")
 
-
+# Tahmin fonksiyonu
 def predict_gpa():
     try:
         age = int(entry_age.get())
@@ -16,58 +16,103 @@ def predict_gpa():
         education = education_var.get()
         style = style_var.get()
 
-        # Dataframe oluştur
         data = {
             "Age": [age],
             "StudyTimeWeekly": [study_time],
-            "TeacherExperience": [experience],
-            "TeacherEducation": [education],
-            "TeachingStyle": [style]
+            "Teacher_ExperienceYears": [experience],
+            "Teacher_Degree": [education],
+            "Teacher_Style": [style]
         }
         df = pd.DataFrame(data)
-
-        # Kategorikleri dummy’ye çevir
         df = pd.get_dummies(df)
 
-        # Modelin eğitiminde kullanılan kolonlarla eşleştir
-        # Eksik kolon varsa ekle
         for col in model.feature_names_in_:
             if col not in df.columns:
                 df[col] = 0
         df = df[model.feature_names_in_]
 
         gpa = model.predict(df)[0]
+
         messagebox.showinfo("Tahmin", f"Tahmini GPA: {gpa:.2f}")
+        progress.set(gpa / 4.0)
+        gpa_label.configure(text=f"Tahmini GPA: {gpa:.2f}")
+
     except Exception as e:
         messagebox.showerror("Hata", str(e))
 
 
-# GUI
-root = tk.Tk()
-root.title("GPA Tahmin Uygulaması")
+# Tema
+ctk.set_appearance_mode("dark")
+ctk.set_default_color_theme("blue")
 
-tk.Label(root, text="Öğrenci Yaşı:").grid(row=0, column=0)
-entry_age = tk.Entry(root)
-entry_age.grid(row=0, column=1)
+root = ctk.CTk()
+root.title("🎓 GPA Tahmin Uygulaması")
 
-tk.Label(root, text="Haftalık Çalışma Saati:").grid(row=1, column=0)
-entry_study = tk.Entry(root)
-entry_study.grid(row=1, column=1)
+# Tam ekran
+root.state("zoomed")
 
-tk.Label(root, text="Öğretmen Deneyimi (yıl):").grid(row=2, column=0)
-entry_exp = tk.Entry(root)
-entry_exp.grid(row=2, column=1)
+# Grid yapılandırması → ortalama için
+root.grid_rowconfigure(0, weight=1)
+root.grid_rowconfigure(2, weight=1)
+root.grid_columnconfigure(0, weight=1)
+root.grid_columnconfigure(2, weight=1)
 
-tk.Label(root, text="Öğretmen Eğitim Düzeyi:").grid(row=3, column=0)
-education_var = tk.StringVar()
-education_menu = tk.OptionMenu(root, education_var, "Bachelor", "Master", "PhD")
-education_menu.grid(row=3, column=1)
+# Ana çerçeve (ortalanacak)
+main_frame = ctk.CTkFrame(root)
+main_frame.grid(row=1, column=1, padx=20, pady=20)
 
-tk.Label(root, text="Öğretim Stili:").grid(row=4, column=0)
-style_var = tk.StringVar()
-style_menu = tk.OptionMenu(root, style_var, "Traditional", "Interactive", "Mixed")
-style_menu.grid(row=4, column=1)
+# Başlık
+title = ctk.CTkLabel(main_frame, text="Öğrenci GPA Tahmini", font=ctk.CTkFont(size=22, weight="bold"))
+title.pack(pady=15)
 
-tk.Button(root, text="Tahmin Et", command=predict_gpa).grid(row=5, column=0, columnspan=2)
+# Yaş
+frame_age = ctk.CTkFrame(main_frame)
+frame_age.pack(pady=5, fill="x")
+ctk.CTkLabel(frame_age, text="Öğrenci Yaşı:").pack(side="left", padx=10)
+entry_age = ctk.CTkEntry(frame_age)
+entry_age.pack(side="right", padx=10)
+
+# Haftalık çalışma saati
+frame_study = ctk.CTkFrame(main_frame)
+frame_study.pack(pady=5, fill="x")
+ctk.CTkLabel(frame_study, text="Haftalık Çalışma Saati:").pack(side="left", padx=10)
+entry_study = ctk.CTkEntry(frame_study)
+entry_study.pack(side="right", padx=10)
+
+# Öğretmen deneyimi
+frame_exp = ctk.CTkFrame(main_frame)
+frame_exp.pack(pady=5, fill="x")
+ctk.CTkLabel(frame_exp, text="Öğretmen Deneyimi (yıl):").pack(side="left", padx=10)
+entry_exp = ctk.CTkEntry(frame_exp)
+entry_exp.pack(side="right", padx=10)
+
+# Eğitim düzeyi
+frame_edu = ctk.CTkFrame(main_frame)
+frame_edu.pack(pady=5, fill="x")
+ctk.CTkLabel(frame_edu, text="Öğretmen Eğitim Düzeyi:").pack(side="left", padx=10)
+education_var = ctk.StringVar(value="Bachelor")
+education_menu = ctk.CTkOptionMenu(frame_edu, variable=education_var,
+                                   values=["Bachelor", "Master", "PhD"])
+education_menu.pack(side="right", padx=10)
+
+# Öğretim stili
+frame_style = ctk.CTkFrame(main_frame)
+frame_style.pack(pady=5, fill="x")
+ctk.CTkLabel(frame_style, text="Öğretim Stili:").pack(side="left", padx=10)
+style_var = ctk.StringVar(value="Lecture")
+style_menu = ctk.CTkOptionMenu(frame_style, variable=style_var,
+                               values=["Lecture", "Interactive", "Project-Based"])
+style_menu.pack(side="right", padx=10)
+
+# Tahmin butonu
+predict_btn = ctk.CTkButton(main_frame, text="📊 Tahmin Et", command=predict_gpa, width=200)
+predict_btn.pack(pady=20)
+
+# GPA Progress Bar
+progress = ctk.DoubleVar(value=0.0)
+progressbar = ctk.CTkProgressBar(main_frame, variable=progress, width=300)
+progressbar.pack(pady=10)
+gpa_label = ctk.CTkLabel(main_frame, text="Tahmini GPA: -", font=ctk.CTkFont(size=16))
+gpa_label.pack(pady=5)
 
 root.mainloop()
