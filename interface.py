@@ -116,3 +116,5 @@ gpa_label = ctk.CTkLabel(main_frame, text="Tahmini OBP: -", font=ctk.CTkFont(siz
 gpa_label.pack(pady=5)
 
 root.mainloop()
+
+#test push for wrong pull

@@ -60,3 +60,5 @@ model.fit(X_train, y_train)
 joblib.dump(model, "gpa_predictor.pkl")
 
 print("✅ Model başarıyla eğitildi ve kaydedildi. (100’lük sistem + dereceler + tecrübe + stil etkileri eklendi!)")
+
+#test push for wrong pull
