@@ -33,9 +33,9 @@ def predict_gpa():
 
         gpa = model.predict(df)[0]
 
-        messagebox.showinfo("Tahmin", f"Tahmini GPA: {gpa:.2f}")
-        progress.set(gpa / 4.0)
-        gpa_label.configure(text=f"Tahmini GPA: {gpa:.2f}")
+        messagebox.showinfo("Tahmin", f"Tahmini OBP: {gpa:.2f}")
+        progress.set(gpa / 100.0)
+        gpa_label.configure(text=f"Tahmini OBP: {gpa:.2f}")
 
     except Exception as e:
         messagebox.showerror("Hata", str(e))
@@ -46,7 +46,7 @@ ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("blue")
 
 root = ctk.CTk()
-root.title("🎓 GPA Tahmin Uygulaması")
+root.title("🎓 OBP Tahmin Uygulaması")
 
 # Tam ekran
 root.state("zoomed")
@@ -62,7 +62,7 @@ main_frame = ctk.CTkFrame(root)
 main_frame.grid(row=1, column=1, padx=20, pady=20)
 
 # Başlık
-title = ctk.CTkLabel(main_frame, text="Öğrenci GPA Tahmini", font=ctk.CTkFont(size=22, weight="bold"))
+title = ctk.CTkLabel(main_frame, text="Öğrenci OBP Tahmini", font=ctk.CTkFont(size=22, weight="bold"))
 title.pack(pady=15)
 
 # Yaş
@@ -101,7 +101,7 @@ frame_style.pack(pady=5, fill="x")
 ctk.CTkLabel(frame_style, text="Öğretim Stili:").pack(side="left", padx=10)
 style_var = ctk.StringVar(value="Lecture")
 style_menu = ctk.CTkOptionMenu(frame_style, variable=style_var,
-                               values=["Lecture", "Interactive", "Project-Based"])
+                               values=["Lecture", "Project-Based", "Interactive"])
 style_menu.pack(side="right", padx=10)
 
 # Tahmin butonu
@@ -112,7 +112,7 @@ predict_btn.pack(pady=20)
 progress = ctk.DoubleVar(value=0.0)
 progressbar = ctk.CTkProgressBar(main_frame, variable=progress, width=300)
 progressbar.pack(pady=10)
-gpa_label = ctk.CTkLabel(main_frame, text="Tahmini GPA: -", font=ctk.CTkFont(size=16))
+gpa_label = ctk.CTkLabel(main_frame, text="Tahmini OBP: -", font=ctk.CTkFont(size=16))
 gpa_label.pack(pady=5)
 
 root.mainloop()
