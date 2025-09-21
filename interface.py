@@ -4,9 +4,19 @@ from tkinter import messagebox
 from PIL import Image
 import joblib
 import pandas as pd
+import sys, os
+
+def resource_path(relative_path):
+    """PyInstaller ile çalışırken dosya yolunu çözer"""
+    try:
+        base_path = sys._MEIPASS  # PyInstaller geçici klasörü
+    except Exception:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
+
 
 # Modeli yükle
-model = joblib.load("gpa_predictor.pkl")
+model = joblib.load(resource_path("gpa_predictor.joblib"))
 
 # Tahmin fonksiyonu
 def predict_gpa():
@@ -53,9 +63,11 @@ root.title("🎓 OBP Tahmin Uygulaması")
 root.state("zoomed")
 
 # ---------------- Arkaplan resmi ----------------
-bg_image = ctk.CTkImage(light_image=Image.open("assets/Arkaplan.jpg"),
-                        dark_image=Image.open("assets/Arkaplan.jpg"),
-                        size=(1920, 1080))
+bg_image = ctk.CTkImage(
+    light_image=Image.open(resource_path("assets/Arkaplan.jpg")),
+    dark_image=Image.open(resource_path("assets/Arkaplan.jpg")),
+    size=(1920, 1080)
+)
 bg_label = ctk.CTkLabel(root, image=bg_image, text="")
 bg_label.place(relx=0.5, rely=0.5, anchor="center")
 # ------------------------------------------------

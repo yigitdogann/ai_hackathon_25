@@ -57,7 +57,7 @@ model = RandomForestRegressor(n_estimators=100, random_state=42)
 model.fit(X_train, y_train)
 
 # 1️⃣1️⃣ Eğitilen modeli kaydetme
-joblib.dump(model, "gpa_predictor.pkl")
+joblib.dump(model, "gpa_predictor.joblib")
 
 print("✅ Model başarıyla eğitildi ve kaydedildi. (100’lük sistem + dereceler + tecrübe + stil etkileri eklendi!)")
 
