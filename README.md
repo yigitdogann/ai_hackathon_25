@@ -29,3 +29,5 @@ Kendi haftalık ders çalışma saatiyle birlikte uygulamaya girdi olarak verdi�
 • Toplanan gerçek datalar aracılığıyla model geliştirilebilir, doğruluğu yüksek tahminler yapacak duruma getirilebilir.  
 • Farklı makine öğrenmesi algoritmaları denenebilir.  
 
+
+*Not: Releases kısmından direkt olarak .exe dosyasını indirebilir, uygulamayı kullanabilirsiniz. İstemezseniz kaynak kodları indirip çalıştırabilirsiniz.*
