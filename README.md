@@ -1,5 +1,3 @@
-﻿# Hackathon 2025 AI Project
-
 # OBP Tahmin Edici
 
 Uygulamamız, öğretmen özelliklerinin öğrenci lise ortalamasına (OBP) olan etkisini hesaplamayı amaçlamaktadır. 
@@ -30,3 +28,4 @@ Kendi haftalık ders çalışma saatiyle birlikte uygulamaya girdi olarak verdi�
 ## Geliştirilebilir yönleri:
 • Toplanan gerçek datalar aracılığıyla model geliştirilebilir, doğruluğu yüksek tahminler yapacak duruma getirilebilir.  
 • Farklı makine öğrenmesi algoritmaları denenebilir.  
+
